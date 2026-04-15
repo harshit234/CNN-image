@@ -1,0 +1,14 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from skimage import data, color, transform
+
+#Load a built-in high quaity image (astronaut)
+img_raw = data.camera()
+img = transform.resize(img_raw, (224, 224))
+
+plt.figure(figsize=(6, 6))
+plt.imshow(img, cmap='grey')
+plt.title("Input image: Ready for feature extraction")
+plt.axis('off')
+plt.show()
