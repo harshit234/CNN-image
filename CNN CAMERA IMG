@@ -36,3 +36,29 @@ plt.imshow(np.absolute(feature_map), cmap='gray')
 plt.title("Extracted Vertical Edges")
 plt.axis('off')
 plt.show()
+
+import tensorflow as tf
+from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import color # Ensure color module is available for gray2rgb
+
+model = VGG16(weights='imagenet', include_top=False)
+
+# Prepare the Defender image for VGG16
+# Convert grayscale image to RGB-like 3 channels before expanding dimensions
+rgb_img = color.gray2rgb(img)
+x = np.expand_dims(rgb_img * 255, axis=0)
+x = preprocess_input(x)
+
+# Extract mid-level Layer (Block 3, Conv 1)
+mid_layer_model = tf.keras.Model(inputs=model.input, outputs=model.get_layer('block3_conv1').output)
+mid_features = mid_layer_model.predict(x)
+
+# Visualize the 10th and 15th filters (neurons)
+fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+ax[0].imshow(mid_features[0, :, :, 10], cmap='viridis')
+ax[0].set_title('Neuron 10')
+ax[1].imshow(mid_features[0, :, :, 15], cmap='viridis')
+ax[1].set_title('Neuron 15')
+plt.show()
