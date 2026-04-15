@@ -62,3 +62,14 @@ ax[0].set_title('Neuron 10')
 ax[1].imshow(mid_features[0, :, :, 15], cmap='viridis')
 ax[1].set_title('Neuron 15')
 plt.show()
+
+#Extract the final Covolutional layer(Block 5, Conv 3)
+deep_layer_model = tf.keras.Model (inputs=model.input, outputs=model.get_layer('block5_conv3').output)
+deep_features = deep_layer_model.predict(x)
+
+# 2 Find a 'specialist' Neuron
+#In deep layers, many filters
+plt.figure(figsize=(8,8))
+plt.imshow(deep_features[0, :, :, 1], cmap='magma')
+plt.title('Specialist')
+plt.show()
