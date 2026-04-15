@@ -12,3 +12,27 @@ plt.imshow(img, cmap='grey')
 plt.title("Input image: Ready for feature extraction")
 plt.axis('off')
 plt.show()
+
+
+from skimage.color import rgb2gray
+from scipy.signal import convolve2d
+
+# img_raw is already grayscale, no need for rgb2gray conversion
+img_gray = img_raw
+
+# The 'neuron' filter (Sobel operator for vertical edges)
+kernel = np.array([
+    [-1, 0, 1],
+    [-2, 0, 2],
+    [-1, 0, 1]
+])
+
+# Simulating the Activation Map via convolution
+feature_map = convolve2d(img_gray, kernel, mode='same')
+
+# Display the result
+plt.figure(figsize=(6, 6))
+plt.imshow(np.absolute(feature_map), cmap='gray')
+plt.title("Extracted Vertical Edges")
+plt.axis('off')
+plt.show()
